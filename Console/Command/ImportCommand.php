@@ -1,4 +1,5 @@
 <?php
+
 namespace CedricBlondeau\CatalogImportCommand\Console\Command;
 
 use Symfony\Component\Console\Command\Command;
@@ -68,6 +69,17 @@ class ImportCommand extends Command
             $import->setFile(realpath($input->getArgument('filename')));
             $result = $import->execute();
 
+            /*
+             * show errors even if import mode is set to "continue on errors"
+             */
+            $errors = $import->getErrors();
+            if ($errors) {
+                foreach ($errors as $error) {
+                    $output->writeln('<error>ERROR [' . $error->getErrorCode() . ']: ' . $error->getErrorMessage() . ' - ' . $error->getErrorDescription() . ' - COL: ' . $error->getColumnName() . ' - ROW: ' . $error->getRowNumber() . '</error>');
+                }
+            }
+
+
             if ($result) {
                 $output->writeln('<info>The import was successful.</info>');
                 $output->writeln("Log trace:");
@@ -76,7 +88,7 @@ class ImportCommand extends Command
                 $output->writeln('<error>Import failed.</error>');
                 $errors = $import->getErrors();
                 foreach ($errors as $error) {
-                    $output->writeln('<error>' . $error->getErrorMessage() . ' - ' .$error->getErrorDescription() . '</error>');
+                    $output->writeln('<error>' . $error->getErrorMessage() . ' - ' . $error->getErrorDescription() . '</error>');
                 }
             }
 

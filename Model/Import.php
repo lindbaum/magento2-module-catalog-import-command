@@ -1,4 +1,5 @@
 <?php
+
 namespace CedricBlondeau\CatalogImportCommand\Model;
 
 use Magento\ImportExport\Model\Import as MagentoImport;
@@ -54,7 +55,9 @@ class Import
                 'entity' => 'catalog_product',
                 'behavior' => MagentoImport::BEHAVIOR_APPEND,
                 MagentoImport::FIELD_NAME_IMG_FILE_DIR => 'pub/media/catalog/product',
-                MagentoImport::FIELD_NAME_VALIDATION_STRATEGY => ProcessingErrorAggregatorInterface::VALIDATION_STRATEGY_SKIP_ERRORS
+                MagentoImport::FIELD_NAME_VALIDATION_STRATEGY => ProcessingErrorAggregatorInterface::VALIDATION_STRATEGY_SKIP_ERRORS,
+                MagentoImport::FIELD_FIELD_MULTIPLE_VALUE_SEPARATOR => ';',
+                MagentoImport::FIELDS_ENCLOSURE => true
             ]
         );
         $this->importModel = $importModel;
